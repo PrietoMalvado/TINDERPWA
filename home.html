@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="style.css">
+  <title>Inicio - Estilo Tinder</title>
+</head>
+<body>
+  <div class="home-container">
+    <div class="card-container">
+      <div class="card" data-name="Modelo De calidad Boehum" data-age="47" style="background-image: url('./img/ejemplo1.jpg');">
+        <h2>Modelo de calidad Boehum, 47</h2>
+      </div>
+      <div class="card" data-name="Modelo de Calidad de Deming" data-age="75" style="background-image: url('./img/ejemplo2.jpg');">
+        <h2>Modelo de calidad de Deming, 75</h2>
+      </div>
+      <div class="card" data-name="Modelo de bladrige" data-age="43" style="background-image: url('./img/ejemplo1.jpg');">
+        <h2>Modelo de bladrige, 43</h2>
+      </div>
+      <div class="card" data-name="Modelo EFQM" data-age="37" style="background-image: url('./img/ejemplo1.jpg');">
+        <h2>Modelo EFQM, 37</h2>
+      </div>
+      <div class="card" data-name="Modelo de calidad de Dromey" data-age="29" style="background-image: url('./img/ejemplo1.jpg');">
+        <h2>Modelo de calidad de Dromey, 29</h2>
+      </div>
+    </div>
+
+    <div class="buttons">
+      <button id="matchBtn" class="action-btn">Match</button>
+      <button id="nextBtn" class="action-btn">Next</button>
+    </div>
+
+    <!-- Pantalla de información post-match -->
+    <div class="match-info" id="matchInfo">
+      <h2 id="matchName"></h2>
+      <div class="gallery" id="gallery">
+        <!-- Las imágenes se agregan dinámicamente -->
+      </div>
+      <button class="close-btn" onclick="closeMatchInfo()">Cerrar</button>
+    </div>
+  </div>
+
+  <script>
+    const cards = document.querySelectorAll('.card');
+    let currentIndex = 0;
+
+    const matchBtn = document.getElementById('matchBtn');
+    const nextBtn = document.getElementById('nextBtn');
+    const matchInfo = document.getElementById('matchInfo');
+    const matchName = document.getElementById('matchName');
+    const gallery = document.getElementById('gallery');
+
+    function hideCard(index) {
+      cards[index].style.transform = 'translateX(1000px)';
+      cards[index].style.opacity = 1;
+    }
+
+    function showNextCard() {
+      hideCard(currentIndex);
+      currentIndex = (currentIndex + 1) % cards.length;
+      const nextCard = cards[currentIndex];
+      nextCard.style.transform = 'translateX(0)';
+      nextCard.style.opacity = 1;
+    }
+
+    matchBtn.addEventListener('click', function () {
+      const card = cards[currentIndex];
+      const name = card.dataset.name;
+      const age = card.dataset.age;
+    
+      matchName.textContent = `${name} ${age}`;
+    
+      gallery.innerHTML = `
+        <img src="./img/${name.toLowerCase()}1.jpg" alt="">
+        <img src="./img/${name.toLowerCase()}2.jpg" alt="">
+        <img src="./img/${name.toLowerCase()}3.jpg" alt="">
+      `;
+    
+      matchInfo.style.display = 'flex';
+    
+      // animación y paso al siguiente
+      card.classList.add('slide-out-right');
+    
+      setTimeout(() => {
+        card.style.opacity = 0;
+        card.classList.remove('slide-out-right');
+        currentIndex = (currentIndex + 1) % cards.length;
+        const nextCard = cards[currentIndex];
+        nextCard.style.opacity = 1;
+        nextCard.style.transform = 'translateX(0)';
+      }, 400);
+    });
+
+    nextBtn.addEventListener('click', function () {
+      const card = cards[currentIndex];
+      card.classList.add('slide-out-left');
+    
+      setTimeout(() => {
+        card.style.opacity = 0;
+        card.classList.remove('slide-out-left');
+        currentIndex = (currentIndex + 1) % cards.length;
+        const nextCard = cards[currentIndex];
+        nextCard.style.opacity = 1;
+        nextCard.style.transform = 'translateX(0)';
+      }, 400);
+    });
+
+    function closeMatchInfo() {
+      matchInfo.style.display = 'none';
+      cards[currentIndex].style.transform = 'translateX(0)';
+      cards[currentIndex].style.opacity = 1;
+    }
+
+    // Mostrar la primera carta al cargar
+    cards[currentIndex].style.transform = 'translateX(0)';
+    cards[currentIndex].style.opacity = 1;
+  </script>
+</body>
+</html>

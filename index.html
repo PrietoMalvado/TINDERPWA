@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="manifest" href="manifest.json">
+</head>
+<body>
+  <div class="container">
+    <img src="./img/logo.png" alt="Logo" class="logo" />
+    
+    <input type="text" placeholder="Usuario" class="input" id="username" />
+    <input type="password" placeholder="Contraseña" class="input" id="password" />
+
+    <button class="login-btn" id="loginBtn">Iniciar sesión</button>
+
+    <div class="links">
+      <a href="registro.html"><strong>Nuevo Usuario</strong></a>
+      <br>
+      <a href="#">¿Olvidaste tu contraseña?</a>
+    </div>
+  </div>
+
+  <script>
+    
+    console.log(navigator.serviceWorker);// impimir navigator.serviceWoeker
+        if ("serviceWorker" in navigator){//si serviceWorker en navigator entonces
+            navigator.serviceWorker.register('/service-worker.js')//se registra el services worker disenado
+                .then ((registration) => {//si se logra la registracion imprimir mensaje de que se efectuo
+                    console.log('service worker registered')
+                }).catch((error) => {//en caso contrario o error mediante excepcion
+                    console.log('service worker failed', error)//ha fallado
+                });
+        }
+
+    document.getElementById('loginBtn').addEventListener('click', function () {
+      const user = document.getElementById('username').value;
+      const pass = document.getElementById('password').value;
+
+      // Validar que el usuario haya ingresado datos
+      if (!user || !pass) {
+        alert("Por favor, ingresa usuario y contraseña.");
+        return;
+      }
+
+      // Recuperar el usuario registrado del localStorage
+      const usuarioRegistrado = JSON.parse(localStorage.getItem('usuarioRegistrado'));
+
+      // Verificar si los datos del usuario coinciden con los registrados
+      if (usuarioRegistrado && usuarioRegistrado.usuario === user && usuarioRegistrado.contrasena === pass) {
+        // Si el usuario y la contraseña son correctos, redirigir a home
+        window.location.href = "home.html";
+      } else {
+        // Si las credenciales son incorrectas
+        alert("Usuario o contraseña incorrectos.");
+      }
+    });
+  </script>
+</body>
+</html>
